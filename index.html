@@ -122,29 +122,33 @@
       const cashTable = document.getElementById("cashTable");
       const dueTable = document.getElementById("dueTable");
 
-      cashTable.innerHTML = "";
+      let cashTableHTML = "";
       cashData.forEach((entry, index) => {
-        cashTable.innerHTML += `
-                    <tr>
-                        <td><input type="text" class="form-control" value="${entry.method}" onchange="updateCash(${index}, 'method', this.value)"></td>
-                        <td><input type="number" class="form-control" value="${entry.amount}" onchange="updateCash(${index}, 'amount', parseFloat(this.value))"></td>
-                        <td><button class="btn btn-danger rounded-button" onclick="deleteCash(${index})">ডিলিট</button></td>
-                    </tr>`;
+        cashTableHTML += `
+      <tr>
+        <td><input type="text" class="form-control" value="${entry.method}" onchange="updateCash(${index}, 'method', this.value)"></td>
+        <td><input type="number" class="form-control" value="${entry.amount}" onchange="updateCash(${index}, 'amount', parseFloat(this.value))"></td>
+        <td><button class="btn btn-danger rounded-button" onclick="deleteCash(${index})">ডিলিট</button></td>
+      </tr>`;
       });
 
-      dueTable.innerHTML = "";
+      let dueTableHTML = "";
       dueData.forEach((entry, index) => {
-        dueTable.innerHTML += `
-                    <tr>
-                        <td><input type="text" class="form-control" value="${entry.person}" onchange="updateDue(${index}, 'person', this.value)"></td>
-                        <td><input type="number" class="form-control" value="${entry.amount}" onchange="updateDue(${index}, 'amount', parseFloat(this.value))"></td>
-                        <td>${entry.timestamp}</td>
-                        <td><button class="btn btn-danger rounded-button" onclick="deleteDue(${index})">ডিলিট</button></td>
-                    </tr>`;
+        dueTableHTML += `
+      <tr>
+        <td><input type="text" class="form-control" value="${entry.person}" onchange="updateDue(${index}, 'person', this.value)"></td>
+        <td><input type="number" class="form-control" value="${entry.amount}" onchange="updateDue(${index}, 'amount', parseFloat(this.value))"></td>
+        <td>${entry.timestamp}</td>
+        <td><button class="btn btn-danger rounded-button" onclick="deleteDue(${index})">ডিলিট</button></td>
+      </tr>`;
       });
+
+      cashTable.innerHTML = cashTableHTML;
+      dueTable.innerHTML = dueTableHTML;
 
       calculateTotals();
     }
+
 
     function addCash() {
       cashData.push({ method: "সোর্স", amount: 0 });
@@ -191,14 +195,18 @@
     }
 
     function calculateTotals() {
-      const currentTotal = cashData.reduce((sum, entry) => sum + (parseFloat(entry.amount) || 0), 0);
-      const totalDue = dueData.reduce((sum, entry) => sum + (parseFloat(entry.amount) || 0), 0);
+      let currentTotal = 0, totalDue = 0;
+
+      cashData.forEach(entry => currentTotal += parseFloat(entry.amount) || 0);
+      dueData.forEach(entry => totalDue += parseFloat(entry.amount) || 0);
+
       const grandTotal = currentTotal + totalDue;
 
       document.getElementById("currentTotal").textContent = "৳" + currentTotal;
       document.getElementById("totalDue").textContent = "৳" + totalDue;
       document.getElementById("grandTotal").textContent = "৳" + grandTotal;
     }
+
 
     function saveData() {
       localStorage.setItem("cashData", JSON.stringify(cashData));
