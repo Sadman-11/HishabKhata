@@ -15,6 +15,7 @@
     body {
       font-family: 'Li Ador Noirrit Regular', Arial, sans-serif;
       margin: 20px;
+      background-color: #fff9f9;
     }
 
     table {
@@ -23,6 +24,10 @@
 
     .rounded-button {
       border-radius: 15px;
+    }
+
+    .rounded-card {
+      border-radius: 20px;
     }
 
     .toast-container {
@@ -68,21 +73,21 @@
         style="max-width:40%; margin: auto;">ব্যক্তি যুক্ত করুন</button>
       <hr>
       <div class="mt-4">
-        <h1 class="text-center">টোটাল আর্নিং/ধার এর হিসাব</h1>
-        <div class="card shadow-sm border-0">
+        <h1 class="text-center">সঞ্চয় ও পাওনা এর হিসাব</h1>
+        <div class="card shadow-sm border-0 rounded-card">
           <div class="card-body">
             <div class="row text-center">
               <div class="col-md-4 mb-3">
                 <h6>বর্তমান ক্যাশ</h6>
-                <button class="btn btn-info rounded-pill w-100 py-2" id="currentTotal">৳0</button>
+                <button class="btn btn-info rounded-pill w-50 py-2" id="currentTotal">৳0</button>
               </div>
               <div class="col-md-4 mb-3">
                 <h6>পাওনা বাকি</h6>
-                <button class="btn btn-warning rounded-pill w-100 py-2" id="totalDue">৳0</button>
+                <button class="btn btn-warning rounded-pill w-50 py-2" id="totalDue">৳0</button>
               </div>
               <div class="col-md-4 mb-3">
                 <h6>সর্বমোট</h6>
-                <button class="btn btn-success rounded-pill w-100 py-2" id="grandTotal">৳0</button>
+                <button class="btn btn-success rounded-pill" style="width: 75%;" id="grandTotal">৳0</button>
               </div>
             </div>
           </div>
@@ -92,7 +97,6 @@
         max-width: fit-content;
         margin: auto;
     ">সেভ ডাটা</button>
-
     </div>
   </div>
 
@@ -112,7 +116,6 @@
 
   <script>
     const cashData = JSON.parse(localStorage.getItem("cashData")) || [];
-
     const dueData = JSON.parse(localStorage.getItem("dueData")) || [];
 
     function renderTables() {
