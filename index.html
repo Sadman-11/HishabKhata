@@ -36,59 +36,64 @@
 
 <body>
   <div class="container">
-    <h1 class="text-center">টোটাল আর্নিং/ধার এর হিসাব</h1>
-
-    <h3>ক্যাশ টাকা</h3>
-    <table class="table table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th>সোর্স</th>
-          <th>এমাউন্ট</th>
-          <th>একশন</th>
-        </tr>
-      </thead>
-      <tbody id="cashTable"></tbody>
-    </table>
-    <button class="btn btn-success rounded-button mb-3" onclick="addCash()">উৎস যোগ করুন</button>
-
-    <br>
-    <hr>
-
-    <h3>বাকি হিসাব</h3>
-    <table class="table table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th>নাম</th>
-          <th>এমাউন্ট</th>
-          <th>তারিখ</th>
-          <th>একশন</th>
-        </tr>
-      </thead>
-      <tbody id="dueTable"></tbody>
-    </table>
-    <button class="btn btn-success rounded-button mb-3" onclick="addDue()">ব্যক্তি যুক্ত করুন</button>
-    <hr>
-
-    <div class="mt-4">
-      <h4>সারাংশ</h4>
+    <div class="row">
+      <h1 class="text-center">ডিজিটাল হিসাব খাতা</h1>
+      <h3>ক্যাশ টাকা</h3>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>সোর্স</th>
+            <th>এমাউন্ট</th>
+            <th>একশন</th>
+          </tr>
+        </thead>
+        <tbody id="cashTable"></tbody>
+      </table>
+      <button class="btn btn-success rounded-button mb-3" style="max-width:40%; margin: auto;" onclick="addCash()">উৎস
+        যোগ করুন</button>
       <hr>
-      <p>
-        <strong>বর্তমান ক্যাশ:</strong>
-        <button class="btn btn-info rounded-pill" id="currentTotal">৳0</button>
-      </p>
-      <p>
-        <strong>পাওনা বাকি:</strong>
-        <button class="btn btn-warning rounded-pill" id="totalDue">৳0</button>
-      </p>
+      <h3>বাকি হিসাব</h3>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>নাম</th>
+            <th>এমাউন্ট</th>
+            <th>তারিখ</th>
+            <th>একশন</th>
+          </tr>
+        </thead>
+        <tbody id="dueTable"></tbody>
+      </table>
+      <button class="btn btn-success rounded-button mb-3" onclick="addDue()"
+        style="max-width:40%; margin: auto;">ব্যক্তি যুক্ত করুন</button>
       <hr>
-      <p>
-        <strong>সর্বমোট:</strong>
-        <button class="btn btn-success rounded-pill" id="grandTotal">৳0</button>
-      </p>
+      <div class="mt-4">
+        <h1 class="text-center">টোটাল আর্নিং/ধার এর হিসাব</h1>
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <div class="row text-center">
+              <div class="col-md-4 mb-3">
+                <h6>বর্তমান ক্যাশ</h6>
+                <button class="btn btn-info rounded-pill w-100 py-2" id="currentTotal">৳0</button>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h6>পাওনা বাকি</h6>
+                <button class="btn btn-warning rounded-pill w-100 py-2" id="totalDue">৳0</button>
+              </div>
+              <div class="col-md-4 mb-3">
+                <h6>সর্বমোট</h6>
+                <button class="btn btn-success rounded-pill w-100 py-2" id="grandTotal">৳0</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary rounded-button mt-3" onclick="saveData()" style="
+        max-width: fit-content;
+        margin: auto;
+    ">সেভ ডাটা</button>
+
     </div>
-
-
-    <button class="btn btn-primary rounded-button" onclick="saveData()">সেভ ডাটা</button>
   </div>
 
   <!-- Toast Notification -->
