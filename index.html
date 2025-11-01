@@ -18,6 +18,36 @@
       font-family: 'Li Ador Noirrit Regular', Arial, sans-serif;
       margin: 20px;
       background-color: #fff9f9;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-theme {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+    }
+
+    body.dark-theme .table {
+      color: #e0e0e0;
+    }
+
+    body.dark-theme .form-control {
+      background-color: #2d2d2d;
+      color: #e0e0e0;
+      border-color: #444;
+    }
+
+    body.dark-theme .card {
+      background-color: #2d2d2d;
+      color: #e0e0e0;
+    }
+
+    body.dark-theme .table-bordered {
+      border-color: #444;
+    }
+
+    body.dark-theme .table-bordered td,
+    body.dark-theme .table-bordered th {
+      border-color: #444;
     }
 
     table {
@@ -44,10 +74,32 @@
       font-size: 0.9rem;
       border-radius: 10px;
     }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: none;
+      border: none;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 
 <body>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
   <div class="container">
     <div class="row">
       <h1 class="text-center">ডিজিটাল হিসাব খাতা</h1>
@@ -104,7 +156,6 @@
     </div>
   </div>
 
-  <!-- Toast Notification -->
   <div class="toast-container">
     <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
       aria-atomic="true">
@@ -121,6 +172,33 @@
   <script>
     const cashData = JSON.parse(localStorage.getItem("cashData")) || [];
     const dueData = JSON.parse(localStorage.getItem("dueData")) || [];
+
+    function toggleTheme() {
+      const body = document.body;
+      const themeToggle = document.getElementById('themeToggle');
+      
+      body.classList.toggle('dark-theme');
+      
+      if (body.classList.contains('dark-theme')) {
+        themeToggle.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const themeToggle = document.getElementById('themeToggle');
+      
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeToggle.textContent = '☀️';
+      }
+    }
+
+    loadTheme();
 
     function renderTables() {
       const cashTable = document.getElementById("cashTable");
