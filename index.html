@@ -132,22 +132,41 @@
       <button class="btn btn-success rounded-button mb-3" onclick="addDue()"
         style="max-width:40%; margin: auto;">ব্যক্তি যুক্ত করুন</button>
       <hr>
+      <h3>লোন এর হিসাব</h3>
+      <table class="table table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>নাম</th>
+            <th>এমাউন্ট</th>
+            <th>তারিখ</th>
+            <th>একশন</th>
+          </tr>
+        </thead>
+        <tbody id="loanTable"></tbody>
+      </table>
+      <button class="btn btn-success rounded-button mb-3" onclick="addLoan()"
+        style="max-width:40%; margin: auto;">লোন যুক্ত করুন</button>
+      <hr>
       <div class="mt-4">
-        <h1 class="text-center">সঞ্চয় ও পাওনা এর হিসাব</h1>
+        <h1 class="text-center">সঞ্চয় ও পাওনা এর হিসাব</h1>
         <div class="card shadow-sm border-0 rounded-card">
           <div class="card-body">
             <div class="row text-center">
-              <div class="col-md-4 mb-3">
+              <div class="col-md-3 mb-3">
                 <h6>বর্তমান ক্যাশ</h6>
-                <button class="btn btn-info rounded-pill w-50 py-2" id="currentTotal">৳0</button>
+                <button class="btn btn-info rounded-pill w-75 py-2" id="currentTotal">৳0</button>
               </div>
-              <div class="col-md-4 mb-3">
+              <div class="col-md-3 mb-3">
                 <h6>পাওনা বাকি</h6>
-                <button class="btn btn-warning rounded-pill w-50 py-2" id="totalDue">৳0</button>
+                <button class="btn btn-warning rounded-pill w-75 py-2" id="totalDue">৳0</button>
               </div>
-              <div class="col-md-4 mb-3">
+              <div class="col-md-3 mb-3">
+                <h6>লোন</h6>
+                <button class="btn btn-danger rounded-pill w-75 py-2" id="totalLoan">৳0</button>
+              </div>
+              <div class="col-md-3 mb-3">
                 <h6>সর্বমোট</h6>
-                <button class="btn btn-success rounded-pill" style="width: 75%;" id="grandTotal">৳0</button>
+                <button class="btn btn-success rounded-pill w-75 py-2" id="grandTotal">৳0</button>
               </div>
             </div>
           </div>
@@ -172,6 +191,7 @@
   <script>
     const cashData = JSON.parse(localStorage.getItem("cashData")) || [];
     const dueData = JSON.parse(localStorage.getItem("dueData")) || [];
+    const loanData = JSON.parse(localStorage.getItem("loanData")) || [];
 
     function toggleTheme() {
       const body = document.body;
@@ -203,6 +223,7 @@
     function renderTables() {
       const cashTable = document.getElementById("cashTable");
       const dueTable = document.getElementById("dueTable");
+      const loanTable = document.getElementById("loanTable");
 
       let cashTableHTML = "";
       cashData.forEach((entry, index) => {
@@ -230,8 +251,20 @@
       </tr>`;
       });
 
+      let loanTableHTML = "";
+      loanData.forEach((entry, index) => {
+        loanTableHTML += `
+      <tr>
+        <td><input type="text" class="form-control" value="${entry.person}" onchange="updateLoan(${index}, 'person', this.value)"></td>
+        <td><input type="number" class="form-control" value="${entry.amount}" onchange="updateLoan(${index}, 'amount', parseFloat(this.value))"></td>
+        <td>${entry.timestamp}</td>
+        <td><button class="btn btn-danger rounded-button" onclick="deleteLoan(${index})">ডিলিট</button></td>
+      </tr>`;
+      });
+
       cashTable.innerHTML = cashTableHTML;
       dueTable.innerHTML = dueTableHTML;
+      loanTable.innerHTML = loanTableHTML;
 
       calculateTotals();
     }
@@ -285,6 +318,11 @@
       renderTables();
     }
 
+    function addLoan() {
+      loanData.push({ person: "নাম", amount: 0, timestamp: date() });
+      renderTables();
+    }
+
     function updateCash(index, key, value) {
       cashData[index][key] = value;
       saveData()
@@ -293,6 +331,12 @@
 
     function updateDue(index, key, value) {
       dueData[index][key] = value;
+      saveData()
+      renderTables();
+    }
+
+    function updateLoan(index, key, value) {
+      loanData[index][key] = value;
       saveData()
       renderTables();
     }
@@ -309,16 +353,24 @@
       renderTables();
     }
 
+    function deleteLoan(index) {
+      loanData.splice(index, 1);
+      saveData()
+      renderTables();
+    }
+
     function calculateTotals() {
-      let currentTotal = 0, totalDue = 0;
+      let currentTotal = 0, totalDue = 0, totalLoan = 0;
 
       cashData.forEach(entry => currentTotal += parseFloat(entry.amount) || 0);
       dueData.forEach(entry => totalDue += parseFloat(entry.amount) || 0);
+      loanData.forEach(entry => totalLoan += parseFloat(entry.amount) || 0);
 
-      const grandTotal = currentTotal + totalDue;
+      const grandTotal = currentTotal + totalDue - totalLoan;
 
       document.getElementById("currentTotal").textContent = "৳" + currentTotal;
       document.getElementById("totalDue").textContent = "৳" + totalDue;
+      document.getElementById("totalLoan").textContent = "৳" + totalLoan;
       document.getElementById("grandTotal").textContent = "৳" + grandTotal;
     }
 
@@ -326,6 +378,7 @@
     function saveData() {
       localStorage.setItem("cashData", JSON.stringify(cashData));
       localStorage.setItem("dueData", JSON.stringify(dueData));
+      localStorage.setItem("loanData", JSON.stringify(loanData));
       showToast();
     }
 
